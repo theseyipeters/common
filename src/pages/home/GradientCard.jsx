@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Heart from "../../svgs/Heart";
 import Code from "../../svgs/Code";
 import Download from "../../svgs/Download";
 import Options from "../../svgs/Options";
 import CloseIcon from "../../svgs/CloseIcon";
+import CopyIcon from "../../svgs/CopyIcon";
+import ViewIcon from "../../svgs/ViewIcon";
+import XIcon from "../../svgs/XIcon";
+import Favorite from "../../svgs/Favorite";
+import Facebook from "../../svgs/Facebook";
+import LinkedIn from "../../svgs/LinkedIn";
+import { motion, AnimatePresence } from "framer-motion";
 
 const downloadImage = (gradient, width = 600, height = 400) => {
 	const canvas = document.createElement("canvas");
@@ -34,6 +41,7 @@ export default function GradientCard({
 }) {
 	const [hoverIndex, setHoverIndex] = useState(null);
 	const [showCss, setShowCss] = useState(false);
+	const [showOptions, setShowOptions] = useState(false);
 
 	const handleMouseEnter = (index) => {
 		setHoverIndex(index);
@@ -51,6 +59,14 @@ export default function GradientCard({
 		setShowCss(false);
 	};
 
+	const handleShowOptions = () => {
+		setShowOptions(true);
+	};
+
+	const handleCloseOptions = () => {
+		setShowOptions(false);
+	};
+
 	const handleCopyToClipboard = () => {
 		const cssCodeElement = document.getElementById("css_code");
 		const cssCode = cssCodeElement.innerText;
@@ -62,6 +78,12 @@ export default function GradientCard({
 	const cssCode1 = `background: ${colors[0]};`;
 	const cssCode2 = `background: -webkit-linear-gradient(${angle}deg, ${colors[0]}, ${colors[1]});`;
 	const cssCode3 = `background: linear-gradient(${angle}deg, ${colors[0]}, ${colors[1]});`;
+
+	const variants = {
+		hidden: { opacity: 0, y: 20 },
+		visible: { opacity: 1, y: 0 },
+		exit: { opacity: 0, y: 20 },
+	};
 
 	return (
 		<div
@@ -78,7 +100,7 @@ export default function GradientCard({
 				<div className="w-full flex mt-2">
 					<div className="w-full">
 						<h2>{name}</h2>
-						<div>
+						<div className="font-light">
 							<small
 								style={{ color: hoverIndex === 0 ? colors[0] : undefined }}
 								onMouseEnter={() => handleMouseEnter(0)}
@@ -124,49 +146,145 @@ export default function GradientCard({
 							onClick={() => downloadImage(gradient)}>
 							<Download />
 						</div>
-						<div className="hover:text-black-2 cursor-pointer">
+						<div
+							onClick={handleShowOptions}
+							className="hover:text-black-2 cursor-pointer">
 							<Options />
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{showCss && (
-				<div className="absolute border inset-0 top-0 h-[338px] bg-white-1 bg-opacity-[95.5%] rounded-lg">
-					<div className="relative w-full border h-full py-8 px-4 rounded-lg shadow-lg flex flex-col gap-4 justify-between">
-						<h3 className="font-bold">CSS Code</h3>
-						<div
-							id="css_code"
-							className="w-full flex flex-col gap-2 flex-grow">
-							<div>
-								<pre className="flex text-[12px]">{cssCode1}</pre>
-								<pre className="flex text-[12px] text-gray-2/70">
-									/* fallback for old browsers */
-								</pre>
+			<AnimatePresence>
+				{showCss && (
+					<motion.div
+						className="absolute border inset-0 top-0 h-[338px] bg-white-1 bg-opacity-[95.5%] rounded-lg"
+						initial="hidden"
+						animate="visible"
+						exit="exit"
+						variants={variants}
+						transition={{ duration: 0.5, ease: "easeInOut" }}>
+						<div className="relative w-full border h-full py-8 px-4 rounded-lg shadow-lg flex flex-col gap-4 justify-between">
+							<h3 className="font-semibold">CSS Code</h3>
+							<div
+								id="css_code"
+								className="w-full flex flex-col gap-2 flex-grow">
+								<div>
+									<pre className="flex text-[12px]">{cssCode1}</pre>
+									<pre className="flex text-[12px] text-gray-2/70">
+										/* fallback for old browsers */
+									</pre>
+								</div>
+								<div>
+									<pre className="flex text-[12px]">{cssCode2}</pre>
+									<pre className="flex text-[12px] text-gray-2/70">
+										/* Chrome 10-25, Safari 5.1-6 */
+									</pre>
+								</div>
+								<pre className="flex text-[12px]">{cssCode3}</pre>
 							</div>
-							<div>
-								<pre className="flex text-[12px]">{cssCode2}</pre>
-								<pre className="flex text-[12px] text-gray-2/70">
-									/* Chrome 10-25, Safari 5.1-6 */
-								</pre>
+							<div className="mt-auto flex items-baseline">
+								<button
+									className="bg-black-1 text-white-1 px-4 py-2 rounded font-light text-sm"
+									onClick={handleCopyToClipboard}>
+									Copy to clipboard
+								</button>
 							</div>
-							<pre className="flex text-[12px]">{cssCode3}</pre>
+							<div
+								onClick={handleCloseCss}
+								className="absolute top-7 right-5 cursor-pointer">
+								<CloseIcon />
+							</div>
 						</div>
-						<div className="mt-auto flex items-baseline">
-							<button
-								className="bg-black-1 text-white-1 px-4 py-2 rounded font-light text-sm"
-								onClick={handleCopyToClipboard}>
-								Copy to clipboard
-							</button>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			<AnimatePresence>
+				{showOptions && (
+					<motion.div
+						className="absolute border inset-0 top-0 h-[338px] bg-white-1 bg-opacity-[95.5%] rounded-lg"
+						initial="hidden"
+						animate="visible"
+						exit="exit"
+						variants={variants}
+						transition={{ duration: 0.5, ease: "easeInOut" }}>
+						<div className="relative w-full border h-full py-8 px-4 rounded-lg shadow-lg flex flex-col gap-4 justify-between">
+							<div className="mt-4 text-black-3 font-light px-4">
+								<ul className="flex flex-col gap-2 items-start ">
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<CopyIcon />
+											Copy gradient link
+										</button>
+									</li>
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<ViewIcon />
+											View/Edit gradient
+										</button>
+									</li>
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<Favorite />
+											Add to Favorites
+										</button>
+									</li>
+								</ul>
+								<ul className="mt-3 flex flex-col gap-1 pt-3 border-t w-full border-gray-3/30 items-start">
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<XIcon />
+											Share on X
+										</button>
+									</li>
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<LinkedIn />
+											Share on LinkedIn
+										</button>
+									</li>
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<Facebook />
+											Share on Facebook
+										</button>
+									</li>
+								</ul>
+							</div>
+							<div
+								onClick={handleCloseOptions}
+								className="absolute top-7 right-5 cursor-pointer">
+								<CloseIcon />
+							</div>
 						</div>
-						<div
-							onClick={handleCloseCss}
-							className="absolute top-7 right-5 cursor-pointer">
-							<CloseIcon />
-						</div>
-					</div>
-				</div>
-			)}
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }

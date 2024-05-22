@@ -53,3 +53,33 @@ p {
 .transition-color {
 	transition: color 0.3s ease-in-out;
 }
+
+@keyframes slideFadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(0px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideFadeOut {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(0px);
+	}
+}
+
+.slide-fade-in {
+	animation: slideFadeIn 1s ease-out forwards;
+}
+
+.slide-fade-out {
+	animation: slideFadeOut 1s ease-out forwards;
+}
