@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Heart from "../../svgs/Heart";
@@ -12,6 +12,7 @@ import XIcon from "../../svgs/XIcon";
 import Favorite from "../../svgs/Favorite";
 import Facebook from "../../svgs/Facebook";
 import LinkedIn from "../../svgs/LinkedIn";
+import Whatsapp from "../../svgs/Whatsapp";
 
 const downloadImage = (gradient, width = 600, height = 400) => {
 	const canvas = document.createElement("canvas");
@@ -41,10 +42,37 @@ export default function GradientCard({
 	opacity,
 	id,
 	link,
+	selectedLayout,
 }) {
 	const [hoverIndex, setHoverIndex] = useState(null);
 	const [showCss, setShowCss] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(false);
+
+	useEffect(() => {
+		// Check if the gradient is already in favorites on mount
+		const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+		setIsFavorite(favorites.some((fav) => fav.id === id));
+	}, [id]);
+
+	const handleToggleFavorite = () => {
+		const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+		let updatedFavorites;
+
+		if (isFavorite) {
+			// Remove only the specific gradient
+			updatedFavorites = favorites.filter((fav) => fav.id !== id);
+		} else {
+			// Add the gradient
+			updatedFavorites = [
+				...favorites,
+				{ id, colors, angle, opacity, name, gradient },
+			];
+		}
+
+		localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+		setIsFavorite(!isFavorite);
+	};
 
 	const encodeGradient = (gradient) => {
 		const jsonString = JSON.stringify(gradient);
@@ -109,73 +137,200 @@ export default function GradientCard({
 		exit: { opacity: 0, y: 20 },
 	};
 
+	const handleShare = (platform) => {
+		const encodedUrl = encodeURIComponent(link);
+		let shareUrl = "";
+		switch (platform) {
+			case "twitter":
+				shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodeURIComponent(
+					`Check out this gradient: ${name}`
+				)}`;
+				break;
+			case "linkedin":
+				shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+				break;
+			case "facebook":
+				shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+				break;
+			case "whatsapp":
+				shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+					`Check out this gradient: ${name} ${link}`
+				)}`;
+				break;
+			default:
+				break;
+		}
+		window.open(shareUrl, "_blank");
+	};
+
 	return (
 		<div
 			style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.09)" }}
-			className="relative shadow-md rounded-lg w-full h-[338px] px-[15px] pt-[15px] pb-[30px]">
-			<div
-				id="gradient"
-				className="rounded-lg w-full h-[194px]"
-				style={{ background: gradient }}></div>
+			className={`relative shadow-md rounded-lg w-full px-[15px]  ${
+				selectedLayout === "square"
+					? "pt-[15px] pb-[30px] h-[338px]"
+					: "py-[30px] h-[354px]"
+			}`}>
+			{selectedLayout === "square" ? (
+				<>
+					<div
+						id="gradient"
+						className="rounded-lg w-full h-[194px] transition-height ease-in-out duration-500"
+						style={{ background: gradient }}></div>
 
-			<div>
-				<div className="w-full flex mt-2">
-					<div className="w-full">
-						<Link to={`/gradient/${encodedGradient}`}>{name}</Link>
-						<div className="font-light">
-							<small
-								style={{ color: hoverIndex === 0 ? colors[0] : undefined }}
-								onMouseEnter={() => handleMouseEnter(0)}
-								onMouseLeave={handleMouseLeave}
-								className="text-gray-2 cursor-pointer transition-color">
-								{colors[0]}
-							</small>
-							<small className="text-gray-2 transition-color">&rarr; </small>
-							<small
-								style={{ color: hoverIndex === 1 ? colors[1] : undefined }}
-								onMouseEnter={() => handleMouseEnter(1)}
-								onMouseLeave={handleMouseLeave}
-								className="text-gray-2 cursor-pointer transition-color">
-								{colors[1]}
-							</small>
-							<small className="text-gray-2 transition-color"> at </small>
-							<small className="text-gray-2 cursor-pointer">{angle}°</small>
+					<div>
+						<div className="w-full flex mt-2">
+							<div className="w-full">
+								<Link
+									className="font-medium"
+									to={`/gradient/${encodedGradient}`}>
+									{name}
+								</Link>
+								<div className="font-light">
+									<small
+										style={{ color: hoverIndex === 0 ? colors[0] : undefined }}
+										onMouseEnter={() => handleMouseEnter(0)}
+										onMouseLeave={handleMouseLeave}
+										className="text-gray-2 cursor-pointer transition-color">
+										{colors[0]}
+									</small>
+									<small className="text-gray-2 transition-color">
+										&rarr;{" "}
+									</small>
+									<small
+										style={{ color: hoverIndex === 1 ? colors[1] : undefined }}
+										onMouseEnter={() => handleMouseEnter(1)}
+										onMouseLeave={handleMouseLeave}
+										className="text-gray-2 cursor-pointer transition-color">
+										{colors[1]}
+									</small>
+									<small className="text-gray-2 transition-color"> at </small>
+									<small className="text-gray-2 cursor-pointer">{angle}°</small>
+								</div>
+							</div>
+							<div
+								onClick={handleToggleFavorite}
+								id="heart"
+								className={` h-fit cursor-pointer ${
+									isFavorite
+										? "text-red-600 transition-colors duration-500"
+										: "text-gray-3 transition-colors duration-500"
+								}
+								}`}>
+								<Heart />
+							</div>
 						</div>
-					</div>
-					<div className="text-gray-3 h-fit">
-						<Heart />
-					</div>
-				</div>
 
-				<div className="flex flex-row mt-4 items-center justify-between">
-					<div className="flex flex-row gap-1">
-						<div
-							className="w-[20px] h-[20px] rounded-md"
-							style={{ background: colors[0] }}></div>
-						<div
-							className="w-[20px] h-[20px] rounded-md"
-							style={{ background: colors[1] }}></div>
-					</div>
+						<div className="flex flex-row mt-4 items-center justify-between">
+							<div className="flex flex-row gap-1">
+								<div
+									className="w-[20px] h-[20px] rounded-md"
+									style={{ background: colors[0] }}></div>
+								<div
+									className="w-[20px] h-[20px] rounded-md"
+									style={{ background: colors[1] }}></div>
+							</div>
 
-					<div className="text-gray-2 h-auto flex flex-row px-2 py-1 gap-2 border border-gray-3 rounded-full">
-						<div
-							className="hover:text-black-2 cursor-pointer"
-							onClick={handleShowCss}>
-							<Code />
-						</div>
-						<div
-							className="hover:text-black-2 cursor-pointer"
-							onClick={() => downloadImage(gradient)}>
-							<Download />
-						</div>
-						<div
-							onClick={handleShowOptions}
-							className="hover:text-black-2 cursor-pointer">
-							<Options />
+							<div className="text-gray-2 h-auto flex flex-row px-2 py-1 gap-2 border border-gray-3 rounded-full">
+								<div
+									className="hover:text-black-2 cursor-pointer"
+									onClick={handleShowCss}>
+									<Code />
+								</div>
+								<div
+									className="hover:text-black-2 cursor-pointer"
+									onClick={() => downloadImage(gradient)}>
+									<Download />
+								</div>
+								<div
+									onClick={handleShowOptions}
+									className="hover:text-black-2 cursor-pointer">
+									<Options />
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</>
+			) : (
+				<>
+					<div
+						id="gradient"
+						className="rounded-full w-[194px] h-[194px] transition-width ease-in-out duration-500 mx-auto flex items-center justify-center"
+						style={{ background: gradient }}></div>
+
+					<div>
+						<div className="w-full flex mt-2">
+							<div className="w-full flex flex-col items-center">
+								<Link
+									className="font-medium"
+									to={`/gradient/${encodedGradient}`}>
+									{name}
+								</Link>
+								<div className="font-light">
+									<small
+										style={{ color: hoverIndex === 0 ? colors[0] : undefined }}
+										onMouseEnter={() => handleMouseEnter(0)}
+										onMouseLeave={handleMouseLeave}
+										className="text-gray-2 cursor-pointer transition-color">
+										{colors[0]}
+									</small>
+									<small className="text-gray-2 transition-color">
+										&rarr;{" "}
+									</small>
+									<small
+										style={{ color: hoverIndex === 1 ? colors[1] : undefined }}
+										onMouseEnter={() => handleMouseEnter(1)}
+										onMouseLeave={handleMouseLeave}
+										className="text-gray-2 cursor-pointer transition-color">
+										{colors[1]}
+									</small>
+									<small className="text-gray-2 transition-color"> at </small>
+									<small className="text-gray-2 cursor-pointer">{angle}°</small>
+								</div>
+							</div>
+						</div>
+						<div
+							onClick={handleToggleFavorite}
+							id="heart"
+							className={`absolute top-5 right-5 cursor-pointer h-fit ${
+								isFavorite
+									? "text-red-600 transition-colors duration-500"
+									: "text-gray-3 transition-colors duration-500"
+							}`}>
+							<Heart />
+						</div>
+
+						<div className="flex flex-row mt-4 items-center justify-between">
+							<div className="flex flex-row gap-1">
+								<div
+									className="w-[20px] h-[20px] rounded-md"
+									style={{ background: colors[0] }}></div>
+								<div
+									className="w-[20px] h-[20px] rounded-md"
+									style={{ background: colors[1] }}></div>
+							</div>
+
+							<div className="text-gray-2 h-auto flex flex-row px-2 py-1 gap-2 border border-gray-3 rounded-full">
+								<div
+									className="hover:text-black-2 cursor-pointer"
+									onClick={handleShowCss}>
+									<Code />
+								</div>
+								<div
+									className="hover:text-black-2 cursor-pointer"
+									onClick={() => downloadImage(gradient)}>
+									<Download />
+								</div>
+								<div
+									onClick={handleShowOptions}
+									className="hover:text-black-2 cursor-pointer">
+									<Options />
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			)}
 
 			<AnimatePresence>
 				{showCss && (
@@ -258,30 +413,45 @@ export default function GradientCard({
 											View/Edit gradient
 										</button>
 									</li>
-									<li>
-										<button
-											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
-											variant={`text`}
-											state="default"
-											size={"lg"}>
-											<Favorite />
-											Add to Favorites
-										</button>
+									<li onClick={handleToggleFavorite}>
+										{isFavorite ? (
+											<button
+												className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+												variant={`text`}
+												state="default"
+												size={"lg"}>
+												<div className="text-red-600">
+													<Heart />
+												</div>
+												Remove from Favorites
+											</button>
+										) : (
+											<button
+												className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+												variant={`text`}
+												state="default"
+												size={"lg"}>
+												<Favorite />
+												Add to Favorites
+											</button>
+										)}
 									</li>
 								</ul>
 								<ul className="mt-3 flex flex-col gap-1 pt-3 border-t w-full border-gray-3/30 items-start">
 									<li>
-										<button
+										<Link
+											onClick={() => handleShare("x")}
 											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
 											variant={`text`}
 											state="default"
 											size={"lg"}>
 											<XIcon />
 											Share on X
-										</button>
+										</Link>
 									</li>
 									<li>
 										<button
+											onClick={() => handleShare("linkedin")}
 											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
 											variant={`text`}
 											state="default"
@@ -292,12 +462,13 @@ export default function GradientCard({
 									</li>
 									<li>
 										<button
+											onClick={() => handleShare("whatsapp")}
 											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
 											variant={`text`}
 											state="default"
 											size={"lg"}>
-											<Facebook />
-											Share on Facebook
+											<Whatsapp />
+											Share on Whatsapp
 										</button>
 									</li>
 								</ul>

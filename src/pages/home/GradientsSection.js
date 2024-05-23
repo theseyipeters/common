@@ -175,7 +175,7 @@ const mixWords = [
 	"Alloy",
 	"Segada",
 	"Jaukt",
-	"Laħq",
+	"Lahq",
 	"Sekoita",
 	"Swirl",
 	"Mélanger",
@@ -225,6 +225,12 @@ const generateGradient = () => {
 export default function GradientsSection() {
 	const [gradients, setGradients] = useState([]);
 
+	const [selectedLayout, setSelectedLayout] = useState("circle"); // Default layout
+
+	const handleLayoutChange = (event) => {
+		setSelectedLayout(event.target.value);
+	};
+
 	const refreshGradients = () => {
 		const newGradients = [];
 		for (let i = 0; i < 6; i++) {
@@ -251,16 +257,42 @@ export default function GradientsSection() {
 					</h2>
 
 					<div className="flex flex-row items-center gap-2">
-						<button className="cursor-pointer w-[20px] h-[20px] rounded-md bg-green-1 border border-green-1">
-							{""}
-						</button>
-						<button className="cursor-pointer w-[20px] h-[20px] rounded-full bg-green-1 border border-green-1">
-							{""}
-						</button>
+						<div className="flex items-center gap-2">
+							<input
+								type="radio"
+								id="circleLayout"
+								name="layout"
+								value="circle"
+								checked={selectedLayout === "circle"}
+								onChange={handleLayoutChange}
+								className="cursor-pointer hidden"
+							/>
+							<label
+								htmlFor="circleLayout"
+								className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
+									selectedLayout === "circle" ? "bg-green-1" : "bg-gray-1"
+								}`}></label>
+						</div>
+						<div className="flex items-center gap-2">
+							<input
+								type="radio"
+								id="squareLayout"
+								name="layout"
+								value="square"
+								checked={selectedLayout === "square"}
+								onChange={handleLayoutChange}
+								className="cursor-pointer hidden"
+							/>
+							<label
+								htmlFor="squareLayout"
+								className={`w-[20px] h-[20px] rounded-md cursor-pointer ${
+									selectedLayout === "square" ? "bg-green-1" : "bg-gray-1"
+								}`}></label>
+						</div>
 						<div className="border-b-2 border-green-1">
 							<Button
 								onClick={refreshGradients}
-								className={`flex flex-row gap-2 items-center `}
+								className={`flex flex-row gap-2 items-center`}
 								variant={"text"}
 								state="default"
 								size={"md"}>
@@ -275,7 +307,9 @@ export default function GradientsSection() {
 						const encodedGradient = encodeGradient(gradientObj);
 						return (
 							<GradientCard
+								selectedLayout={selectedLayout}
 								key={index}
+								id={gradientObj.id}
 								gradient={gradientObj.gradient}
 								colors={gradientObj.colors}
 								name={gradientObj.name}
