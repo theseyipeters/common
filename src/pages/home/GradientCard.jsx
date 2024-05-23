@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Heart from "../../svgs/Heart";
 import Code from "../../svgs/Code";
 import Download from "../../svgs/Download";
@@ -10,7 +12,6 @@ import XIcon from "../../svgs/XIcon";
 import Favorite from "../../svgs/Favorite";
 import Facebook from "../../svgs/Facebook";
 import LinkedIn from "../../svgs/LinkedIn";
-import { motion, AnimatePresence } from "framer-motion";
 
 const downloadImage = (gradient, width = 600, height = 400) => {
 	const canvas = document.createElement("canvas");
@@ -38,10 +39,27 @@ export default function GradientCard({
 	name,
 	angle,
 	opacity,
+	id,
+	link,
 }) {
 	const [hoverIndex, setHoverIndex] = useState(null);
 	const [showCss, setShowCss] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
+
+	const encodeGradient = (gradient) => {
+		const jsonString = JSON.stringify(gradient);
+		const base64String = btoa(jsonString); // Convert JSON string to Base64
+		return encodeURIComponent(base64String); // Make the Base64 string URL-safe
+	};
+
+	const encodedGradient = encodeGradient({
+		id,
+		colors,
+		angle,
+		opacity,
+		name,
+		gradient,
+	});
 
 	const handleMouseEnter = (index) => {
 		setHoverIndex(index);
@@ -75,6 +93,12 @@ export default function GradientCard({
 		});
 	};
 
+	const handleCopyGradientLink = () => {
+		navigator.clipboard.writeText(link).then(() => {
+			alert("Gradient link copied to clipboard!");
+		});
+	};
+
 	const cssCode1 = `background: ${colors[0]};`;
 	const cssCode2 = `background: -webkit-linear-gradient(${angle}deg, ${colors[0]}, ${colors[1]});`;
 	const cssCode3 = `background: linear-gradient(${angle}deg, ${colors[0]}, ${colors[1]});`;
@@ -87,9 +111,7 @@ export default function GradientCard({
 
 	return (
 		<div
-			style={{
-				boxShadow: "0 0 10px rgba(0, 0, 0, 0.09)",
-			}}
+			style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.09)" }}
 			className="relative shadow-md rounded-lg w-full h-[338px] px-[15px] pt-[15px] pb-[30px]">
 			<div
 				id="gradient"
@@ -99,7 +121,7 @@ export default function GradientCard({
 			<div>
 				<div className="w-full flex mt-2">
 					<div className="w-full">
-						<h2>{name}</h2>
+						<Link to={`/gradient/${encodedGradient}`}>{name}</Link>
 						<div className="font-light">
 							<small
 								style={{ color: hoverIndex === 0 ? colors[0] : undefined }}
@@ -215,6 +237,7 @@ export default function GradientCard({
 									<li>
 										<button
 											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											onClick={handleCopyGradientLink}
 											variant={`text`}
 											state="default"
 											size={"lg"}>
@@ -224,6 +247,9 @@ export default function GradientCard({
 									</li>
 									<li>
 										<button
+											onClick={() =>
+												window.open(`/gradient/${encodedGradient}`, "_blank")
+											}
 											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
 											variant={`text`}
 											state="default"

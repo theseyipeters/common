@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import RefreshIcon from "../../svgs/RefreshIcon";
 import GradientCard from "./GradientCard";
+import { v4 as uuidv4 } from "uuid";
 
 const coolWords = [
 	"Radiant",
@@ -132,7 +133,7 @@ const mixWords = [
 	"",
 	"",
 	"",
-	"",
+	"Sepia",
 	"Blend",
 	"Mix",
 	"Fusion",
@@ -180,6 +181,12 @@ const mixWords = [
 	"Mélanger",
 ];
 
+const encodeGradient = (gradient) => {
+	const jsonString = JSON.stringify(gradient);
+	const base64String = btoa(jsonString); // Convert JSON string to Base64
+	return encodeURIComponent(base64String); // Make the Base64 string URL-safe
+};
+
 const generateRandomColor = () => {
 	const letters = "0123456789ABCDEF";
 	let color = "#";
@@ -197,6 +204,7 @@ const generateRandomOpacity = () => {
 };
 
 const generateGradient = () => {
+	const id = uuidv4();
 	const color1 = generateRandomColor();
 	const color2 = generateRandomColor();
 	const angle = generateRandomAngle();
@@ -210,6 +218,7 @@ const generateGradient = () => {
 		name: `${randomCoolWord} ${randomMixWord}`,
 		angle: angle,
 		opacity: opacity,
+		id: id,
 	};
 };
 
@@ -262,16 +271,20 @@ export default function GradientsSection() {
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">
-					{gradients.map((gradientObj, index) => (
-						<GradientCard
-							key={index}
-							gradient={gradientObj.gradient}
-							colors={gradientObj.colors}
-							name={gradientObj.name}
-							angle={gradientObj.angle}
-							opacity={gradientObj.opacity}
-						/>
-					))}
+					{gradients.map((gradientObj, index) => {
+						const encodedGradient = encodeGradient(gradientObj);
+						return (
+							<GradientCard
+								key={index}
+								gradient={gradientObj.gradient}
+								colors={gradientObj.colors}
+								name={gradientObj.name}
+								angle={gradientObj.angle}
+								opacity={gradientObj.opacity}
+								link={`localhost:3000/gradient/${encodedGradient}`}
+							/>
+						);
+					})}
 				</div>
 			</div>
 		</section>
