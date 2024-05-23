@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import RefreshIcon from "../../svgs/RefreshIcon";
 import GradientCard from "./GradientCard";
+import { v4 as uuidv4 } from "uuid";
 
 const coolWords = [
 	"Radiant",
@@ -132,7 +133,7 @@ const mixWords = [
 	"",
 	"",
 	"",
-	"",
+	"Sepia",
 	"Blend",
 	"Mix",
 	"Fusion",
@@ -174,11 +175,17 @@ const mixWords = [
 	"Alloy",
 	"Segada",
 	"Jaukt",
-	"Laħq",
+	"Lahq",
 	"Sekoita",
 	"Swirl",
 	"Mélanger",
 ];
+
+const encodeGradient = (gradient) => {
+	const jsonString = JSON.stringify(gradient);
+	const base64String = btoa(jsonString); // Convert JSON string to Base64
+	return encodeURIComponent(base64String); // Make the Base64 string URL-safe
+};
 
 const generateRandomColor = () => {
 	const letters = "0123456789ABCDEF";
@@ -197,6 +204,7 @@ const generateRandomOpacity = () => {
 };
 
 const generateGradient = () => {
+	const id = uuidv4();
 	const color1 = generateRandomColor();
 	const color2 = generateRandomColor();
 	const angle = generateRandomAngle();
@@ -210,11 +218,18 @@ const generateGradient = () => {
 		name: `${randomCoolWord} ${randomMixWord}`,
 		angle: angle,
 		opacity: opacity,
+		id: id,
 	};
 };
 
 export default function GradientsSection() {
 	const [gradients, setGradients] = useState([]);
+
+	const [selectedLayout, setSelectedLayout] = useState("circle"); // Default layout
+
+	const handleLayoutChange = (event) => {
+		setSelectedLayout(event.target.value);
+	};
 
 	const refreshGradients = () => {
 		const newGradients = [];
@@ -242,16 +257,42 @@ export default function GradientsSection() {
 					</h2>
 
 					<div className="flex flex-row items-center gap-2">
-						<button className="cursor-pointer w-[20px] h-[20px] rounded-md bg-green-1 border border-green-1">
-							{""}
-						</button>
-						<button className="cursor-pointer w-[20px] h-[20px] rounded-full bg-green-1 border border-green-1">
-							{""}
-						</button>
+						<div className="flex items-center gap-2">
+							<input
+								type="radio"
+								id="circleLayout"
+								name="layout"
+								value="circle"
+								checked={selectedLayout === "circle"}
+								onChange={handleLayoutChange}
+								className="cursor-pointer hidden"
+							/>
+							<label
+								htmlFor="circleLayout"
+								className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
+									selectedLayout === "circle" ? "bg-green-1" : "bg-gray-1"
+								}`}></label>
+						</div>
+						<div className="flex items-center gap-2">
+							<input
+								type="radio"
+								id="squareLayout"
+								name="layout"
+								value="square"
+								checked={selectedLayout === "square"}
+								onChange={handleLayoutChange}
+								className="cursor-pointer hidden"
+							/>
+							<label
+								htmlFor="squareLayout"
+								className={`w-[20px] h-[20px] rounded-md cursor-pointer ${
+									selectedLayout === "square" ? "bg-green-1" : "bg-gray-1"
+								}`}></label>
+						</div>
 						<div className="border-b-2 border-green-1">
 							<Button
 								onClick={refreshGradients}
-								className={`flex flex-row gap-2 items-center `}
+								className={`flex flex-row gap-2 items-center`}
 								variant={"text"}
 								state="default"
 								size={"md"}>
@@ -262,16 +303,22 @@ export default function GradientsSection() {
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">
-					{gradients.map((gradientObj, index) => (
-						<GradientCard
-							key={index}
-							gradient={gradientObj.gradient}
-							colors={gradientObj.colors}
-							name={gradientObj.name}
-							angle={gradientObj.angle}
-							opacity={gradientObj.opacity}
-						/>
-					))}
+					{gradients.map((gradientObj, index) => {
+						const encodedGradient = encodeGradient(gradientObj);
+						return (
+							<GradientCard
+								selectedLayout={selectedLayout}
+								key={index}
+								id={gradientObj.id}
+								gradient={gradientObj.gradient}
+								colors={gradientObj.colors}
+								name={gradientObj.name}
+								angle={gradientObj.angle}
+								opacity={gradientObj.opacity}
+								link={`localhost:3000/gradient/${encodedGradient}`}
+							/>
+						);
+					})}
 				</div>
 			</div>
 		</section>

@@ -1,7 +1,7 @@
 import "./global.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
-import Navbar from "./components/sections/Navbar";
+import GradientDetails from "./pages/gradients/GradientDetails";
 
 function App() {
 	return (
@@ -12,6 +12,11 @@ function App() {
 					<Route
 						path="/"
 						element={<Home />}
+					/>
+
+					<Route
+						path="/gradient/:encodedGradient"
+						element={<GradientDetails />}
 					/>
 				</Routes>
 			</BrowserRouter>

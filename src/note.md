@@ -168,7 +168,7 @@ const mixWords = [
 "Alloy",
 "Segada",
 "Jaukt",
-"Laħq",
+"Lahq",
 "Sekoita",
 "Swirl",
 "Mélanger",
