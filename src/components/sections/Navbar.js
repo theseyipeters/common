@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { FavoritesContext } from "../../context/FavoritesContext";
 import CommonLogo from "../../svgs/CommonLogo";
 import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 import Dropdown from "../../svgs/Dropdown";
+import UserFavorite from "../../svgs/UserFavorite";
 
 export default function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
+	const { favorites } = useContext(FavoritesContext);
+
+	const totalSaved = favorites.gradients.length + favorites.palettes.length;
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -39,6 +44,8 @@ export default function Navbar() {
 			hasDropdown: false,
 		},
 	];
+
+	console.log(totalSaved);
 	return (
 		<>
 			<nav
@@ -72,6 +79,14 @@ export default function Navbar() {
 							size={"md"}>
 							Explore
 						</Button>
+					</div>
+
+					<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
+						<UserFavorite />
+
+						<span className="bg-red-500 text-white-1 text-sm absolute top-[-8px] right-0 h-[20px] w-[20px] rounded-full flex items-center justify-center">
+							{totalSaved}
+						</span>
 					</div>
 				</ul>
 			</nav>

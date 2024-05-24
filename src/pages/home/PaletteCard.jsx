@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import Heart from "../../svgs/Heart";
 import Code from "../../svgs/Code";
@@ -7,6 +7,7 @@ import Options from "../../svgs/Options";
 import { motion, AnimatePresence } from "framer-motion";
 import CloseIcon from "../../svgs/CloseIcon";
 import { toPng } from "html-to-image";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 export default function PaletteCard({
 	colors,
@@ -16,8 +17,11 @@ export default function PaletteCard({
 	selectedLayout,
 }) {
 	const [copiedColor, setCopiedColor] = useState(null);
-	const [isFavorite, setIsFavorite] = useState(false);
 	const [showCss, setShowCss] = useState(false);
+	const { favorites, addFavoritePalette, removeFavoritePalette } =
+		useContext(FavoritesContext);
+
+	const isFavorite = favorites.palettes.some((fav) => fav.id === id);
 	const paletteRef = useRef();
 
 	const handleShowCss = () => {
@@ -28,28 +32,19 @@ export default function PaletteCard({
 		setShowCss(false);
 	};
 
-	useEffect(() => {
-		// Check if the gradient is already in favorites on mount
-		const favorites =
-			JSON.parse(localStorage.getItem("FAVORITE PALETTES")) || [];
-		setIsFavorite(favorites.some((fav) => fav.id === id));
-	}, [id]);
+	// useEffect(() => {
+	// 	// Check if the gradient is already in favorites on mount
+	// 	const favorites =
+	// 		JSON.parse(localStorage.getItem("FAVORITE PALETTES")) || [];
+	// 	setIsFavorite(favorites.some((fav) => fav.id === id));
+	// }, [id]);
 
 	const handleToggleFavorite = () => {
-		const favorites =
-			JSON.parse(localStorage.getItem("FAVORITE PALETTES")) || [];
-		let updatedFavorites;
-
 		if (isFavorite) {
-			// Remove only the specific gradient
-			updatedFavorites = favorites.filter((fav) => fav.id !== id);
+			removeFavoritePalette(id);
 		} else {
-			// Add the gradient
-			updatedFavorites = [...favorites, { id, colors, name }];
+			addFavoritePalette({ id, colors, name });
 		}
-
-		localStorage.setItem("FAVORITE PALETTES", JSON.stringify(updatedFavorites));
-		setIsFavorite(!isFavorite);
 	};
 
 	const copyToClipboard = (color) => {
