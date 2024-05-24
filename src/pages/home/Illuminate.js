@@ -4,7 +4,7 @@ import designer from "../../assets/designer.svg";
 
 export default function Illuminate() {
 	return (
-		<section className="mt-[150px] h-fit py-[50px] bg-white-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
+		<section className="h-fit py-[50px] bg-white-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
 			<div className="flex flex-row w-full gap-5 items-center justify-between ">
 				<aside className="w-1/2 border flex flex-col gap-3">
 					<h3 className="font-alata text-5xl tracking-[-3px]">
