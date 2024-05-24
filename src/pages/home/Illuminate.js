@@ -6,7 +6,7 @@ export default function Illuminate() {
 	return (
 		<section className="h-fit py-[50px] bg-white-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
 			<div className="flex flex-row w-full gap-5 items-center justify-between ">
-				<aside className="w-1/2 border flex flex-col gap-3">
+				<aside className="w-1/2 flex flex-col gap-3">
 					<h3 className="font-alata text-5xl tracking-[-3px]">
 						Illuminate your imagination with{" "}
 						<span className="textGradient">Common.</span>{" "}
@@ -16,7 +16,7 @@ export default function Illuminate() {
 						Explore and Create awesome gradients and palettes.
 					</p>
 
-					<div className="w-4/5 flex flex-row items-center justify-center border  gap-4">
+					<div className="w-4/5 flex flex-row items-center justify-center  gap-4">
 						<Button
 							variant={"outlined"}
 							state="default"
