@@ -245,7 +245,7 @@ export default function GradientsSection() {
 	}, []);
 
 	return (
-		<section className="h-screen px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
+		<section className="h-fit px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
 			<div>
 				<div className="flex flex-row items-center justify-between py-1">
 					<h2 className="font-semibold text-xl flex items-center gap-2">

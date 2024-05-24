@@ -4,6 +4,8 @@ import Navbar from "../../components/sections/Navbar";
 import GradientsSection from "./GradientsSection";
 import Illuminate from "./Illuminate";
 import PaletteSection from "./PaletteSection";
+import CTA from "./CTA";
+import Footer from "../../components/sections/Footer";
 
 export default function Home() {
 	return (
@@ -13,15 +15,20 @@ export default function Home() {
 				className=" h-full w-full">
 				<Navbar />
 
-				<div className="flex-1 flex m-auto items-center justify-center w-full py-[220px]">
+				<div className="flex-1 flex items-center justify-center w-full py-[220px]">
 					<Hero />
 				</div>
+				<div className="flex flex-col gap-y-[100px]">
+					<GradientsSection />
 
-				<GradientsSection />
+					<Illuminate />
 
-				<Illuminate />
+					<PaletteSection />
 
-				<PaletteSection />
+					<CTA />
+				</div>
+
+				<Footer />
 			</div>
 		</main>
 	);
