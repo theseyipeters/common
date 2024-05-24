@@ -24,7 +24,8 @@ const Button = ({
 		"text-center",
 		{
 			// Variant styles
-			"bg-black-1 text-white-1": variant === "primary" && state === "default",
+			"bg-black-1 text-white-1 border border-black-1":
+				variant === "primary" && state === "default",
 			"text-green-1": variant === "secondary" && state === "default",
 
 			"border border-green-1 text-green-1":
