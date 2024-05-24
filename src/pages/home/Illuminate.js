@@ -5,9 +5,9 @@ import designer from "../../assets/designer.svg";
 export default function Illuminate() {
 	return (
 		<section className="h-fit py-[50px] bg-white-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
-			<div className="flex flex-row w-full gap-5 items-center justify-between ">
-				<aside className="w-1/2 border flex flex-col gap-3">
-					<h3 className="font-alata text-5xl tracking-[-3px]">
+			<div className="flex flex-col md:flex-col lg:flex-row w-full gap-x-5 gap-y-10 items-center justify-between">
+				<aside className="w-5/5 lg:w-1/2 flex flex-col items-center lg:items-start gap-3 text-center lg:text-left">
+					<h3 className="font-alata text-5xl tracking-[-3px] leading-[50px]">
 						Illuminate your imagination with{" "}
 						<span className="textGradient">Common.</span>{" "}
 					</h3>
@@ -16,11 +16,11 @@ export default function Illuminate() {
 						Explore and Create awesome gradients and palettes.
 					</p>
 
-					<div className="w-4/5 flex flex-row items-center justify-center border  gap-4">
+					<div className="w-full lg:w-4/5 flex flex-col lg:flex-row items-center justify-center  gap-4">
 						<Button
 							variant={"outlined"}
 							state="default"
-							className={`max-w-48`}
+							className={`w-full lg:max-w-48`}
 							size={"lg"}>
 							Explore
 						</Button>
@@ -33,7 +33,7 @@ export default function Illuminate() {
 						</Button>
 					</div>
 				</aside>
-				<aside>
+				<aside className="w-full lg:w-1/2 flex items-center justify-center">
 					<img
 						src={designer}
 						alt=""

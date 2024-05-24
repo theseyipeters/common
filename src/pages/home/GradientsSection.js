@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import RefreshIcon from "../../svgs/RefreshIcon";
 import GradientCard from "./GradientCard";
 import { v4 as uuidv4 } from "uuid";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 const coolWords = [
 	"Radiant",
@@ -225,7 +226,7 @@ const generateGradient = () => {
 
 export default function GradientsSection() {
 	const [gradients, setGradients] = useState([]);
-
+	const { addFavoriteGradient } = useContext(FavoritesContext);
 	const [selectedLayout, setSelectedLayout] = useState("square"); // Default layout
 
 	const handleLayoutChange = (event) => {
@@ -317,6 +318,7 @@ export default function GradientsSection() {
 								angle={gradientObj.angle}
 								opacity={gradientObj.opacity}
 								link={`localhost:3000/gradient/${encodedGradient}`}
+								onFavorite={() => addFavoriteGradient(gradientObj)}
 							/>
 						);
 					})}

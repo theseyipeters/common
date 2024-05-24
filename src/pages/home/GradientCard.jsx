@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Heart from "../../svgs/Heart";
@@ -13,6 +13,7 @@ import Favorite from "../../svgs/Favorite";
 import Facebook from "../../svgs/Facebook";
 import LinkedIn from "../../svgs/LinkedIn";
 import Whatsapp from "../../svgs/Whatsapp";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 const downloadImage = (gradient, width = 1200, height = 800, quality = 1) => {
 	const canvas = document.createElement("canvas");
@@ -53,31 +54,17 @@ export default function GradientCard({
 	const [hoverIndex, setHoverIndex] = useState(null);
 	const [showCss, setShowCss] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
-	const [isFavorite, setIsFavorite] = useState(false);
+	const { favorites, addFavoriteGradient, removeFavoriteGradient } =
+		useContext(FavoritesContext);
 
-	useEffect(() => {
-		// Check if the gradient is already in favorites on mount
-		const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-		setIsFavorite(favorites.some((fav) => fav.id === id));
-	}, [id]);
+	const isFavorite = favorites.gradients.some((fav) => fav.id === id);
 
 	const handleToggleFavorite = () => {
-		const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-		let updatedFavorites;
-
 		if (isFavorite) {
-			// Remove only the specific gradient
-			updatedFavorites = favorites.filter((fav) => fav.id !== id);
+			removeFavoriteGradient(id);
 		} else {
-			// Add the gradient
-			updatedFavorites = [
-				...favorites,
-				{ id, colors, angle, opacity, name, gradient },
-			];
+			addFavoriteGradient({ id, gradient, colors, name, angle, opacity });
 		}
-
-		localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-		setIsFavorite(!isFavorite);
 	};
 
 	const encodeGradient = (gradient) => {

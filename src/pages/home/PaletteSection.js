@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import RefreshIcon from "../../svgs/RefreshIcon";
 import PaletteCard from "./PaletteCard";
 import { v4 as uuidv4 } from "uuid";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 const coolWords = [
 	"Scovian",
@@ -230,6 +231,7 @@ const generatePalette = () => {
 
 export default function PalettesSection() {
 	const [palettes, setPalettes] = useState([]);
+	const { addFavoritePalette } = useContext(FavoritesContext);
 	const [selectedLayout, setSelectedLayout] = useState("square"); // Default layout
 
 	const handleLayoutChange = (event) => {
@@ -315,6 +317,7 @@ export default function PalettesSection() {
 							id={palette.id}
 							colors={palette.colors}
 							name={palette.name}
+							onFavorite={() => addFavoritePalette(palette)}
 						/>
 					))}
 				</div>
