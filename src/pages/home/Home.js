@@ -6,7 +6,6 @@ import Illuminate from "./Illuminate";
 import PaletteSection from "./PaletteSection";
 import CTA from "./CTA";
 import Footer from "../../components/sections/Footer";
-import { FavoritesContext } from "../../context/FavoritesContext";
 
 export default function Home() {
 	return (
@@ -30,8 +29,6 @@ export default function Home() {
 				</div>
 
 				<Footer />
-
-				<div></div>
 			</div>
 		</main>
 	);

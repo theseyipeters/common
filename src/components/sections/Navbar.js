@@ -84,8 +84,8 @@ export default function Navbar() {
 					<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
 						<UserFavorite />
 
-						<span className="bg-red-500 text-white-1 text-sm absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
-							{totalSaved > 10 ? "10+" : totalSaved}
+						<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
+							{totalSaved > 99 ? "99+" : totalSaved}
 						</span>
 					</div>
 				</ul>

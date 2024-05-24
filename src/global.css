@@ -18,10 +18,17 @@ pre {
 	font-family: "Outfit";
 }
 
-.heroBg {
-	background-image: url(../src/assets/heroBg.svg);
-	background-repeat: no-repeat;
-	background-size: contain;
+@media (min-width: 1306px) {
+	.heroBg {
+		background-image: url(../src/assets/heroBg.svg);
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+}
+@media (min-width: 1440px) {
+	.heroBg {
+		background: none;
+	}
 }
 .textGradient {
 	background: linear-gradient(90deg, #798616 70.5%, #06cb5d 100%);
