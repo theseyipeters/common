@@ -9,6 +9,7 @@ const coolWords = [
 	"Radiant",
 	"Ethereal",
 	"Vivid",
+	"Conceal",
 	"Luminous",
 	"Mystic",
 	"Dynamic",
@@ -225,7 +226,7 @@ const generateGradient = () => {
 export default function GradientsSection() {
 	const [gradients, setGradients] = useState([]);
 
-	const [selectedLayout, setSelectedLayout] = useState("circle"); // Default layout
+	const [selectedLayout, setSelectedLayout] = useState("square"); // Default layout
 
 	const handleLayoutChange = (event) => {
 		setSelectedLayout(event.target.value);
@@ -319,6 +320,18 @@ export default function GradientsSection() {
 							/>
 						);
 					})}
+				</div>
+
+				<div className="mt-16 flex flex-col gap-3 items-center justify-center">
+					<p>Need more gradients?</p>
+
+					<Button
+						className={`max-w-56`}
+						variant={`primary`}
+						size={`md`}
+						state={"default"}>
+						See all gradients
+					</Button>
 				</div>
 			</div>
 		</section>

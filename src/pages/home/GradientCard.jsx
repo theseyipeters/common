@@ -14,23 +14,29 @@ import Facebook from "../../svgs/Facebook";
 import LinkedIn from "../../svgs/LinkedIn";
 import Whatsapp from "../../svgs/Whatsapp";
 
-const downloadImage = (gradient, width = 600, height = 400) => {
+const downloadImage = (gradient, width = 1200, height = 800, quality = 1) => {
 	const canvas = document.createElement("canvas");
-	canvas.width = width;
-	canvas.height = height;
+	const dpi = window.devicePixelRatio || 4;
+	canvas.width = width * dpi;
+	canvas.height = height * dpi;
 	const context = canvas.getContext("2d");
 
-	const gradientFill = context.createLinearGradient(0, 0, width, height);
+	const gradientFill = context.createLinearGradient(
+		0,
+		0,
+		width * dpi,
+		height * dpi
+	);
 	const colorStops = gradient.match(/#[0-9A-F]{6}/gi);
 	gradientFill.addColorStop(0, colorStops[0]);
 	gradientFill.addColorStop(1, colorStops[1]);
 
 	context.fillStyle = gradientFill;
-	context.fillRect(0, 0, width, height);
+	context.fillRect(0, 0, width * dpi, height * dpi);
 
 	const link = document.createElement("a");
 	link.download = "gradient.png";
-	link.href = canvas.toDataURL();
+	link.href = canvas.toDataURL("image/png", quality);
 	link.click();
 };
 

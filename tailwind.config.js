@@ -12,6 +12,7 @@ module.exports = {
 
 				white: {
 					1: "#ffffff",
+					2: "#FFF8F0",
 				},
 
 				green: {

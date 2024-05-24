@@ -14,8 +14,8 @@ export default function Hero() {
 	});
 
 	return (
-		<section className="flex items-center justify-center px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
-			<div className="w-3/5 text-center flex flex-col gap-4 mt-[120px]">
+		<section className="flex w-full items-center justify-center px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
+			<div className="w-3/5 text-center flex flex-col gap-4">
 				<h1>
 					Create color <span className="textGradient px-1 w-5">{roles}</span>{" "}
 					<br />

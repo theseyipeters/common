@@ -83,3 +83,8 @@ p {
 .slide-fade-out {
 	animation: slideFadeOut 1s ease-out forwards;
 }
+
+/* Add this to your CSS or tailwind configuration */
+#block:hover div {
+	opacity: 1;
+}
