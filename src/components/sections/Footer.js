@@ -6,70 +6,64 @@ export default function Footer() {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="bg-white-1 text-gray-2  h-fit py-[100px] px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
-			<div className="w-full flex flex-row items-start">
-				<div className="w-2/3 flex flex-col gap-5">
+		<footer className="bg-white-1 text-gray-2 py-10 px-6 md:px-12 lg:px-24 font-outfit">
+			<div className="w-full flex flex-col md:flex-row items-start md:items-start">
+				<div className="w-full md:w-1/2 flex flex-col gap-5">
 					<CommonLogo />
-
-					<div className="font-light w-4/5 flex flex-col gap-3">
-						<p className="font-light leading-[32px]">
+					<div className="font-light flex flex-col gap-3">
+						<p className="font-light leading-8">
 							Common helps you discover the beauty in simplicity. Create
 							stunning color palettes effortlessly and bring your creative
 							projects to life.
 						</p>
-
 						<p className="font-light mt-6">
 							Common © {currentYear}. All Rights Reserved.
 						</p>
 					</div>
 				</div>
-
-				<div className="w-full ml-[40px] mt-[20px] flex flex-row gap-[65px]">
-					<div className="flex flex-col gap-10">
+				<div className="w-full md:w-1/2 mt-10 md:mt-0 flex flex-col md:flex-row gap-10 md:gap-20">
+					<div className="flex flex-col gap-4">
 						<h4 className="text-black-1 font-medium">Common</h4>
-
-						<ul className="flex flex-col gap-5">
+						<ul className="flex flex-col gap-2">
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Explore Gradients</Link>
+								<Link to="/gradients">Explore Gradients</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Explore Palettes</Link>
+								<Link to="/palettes">Explore Palettes</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Generate Gradients</Link>
+								<Link to="/generate/gradients">Generate Gradients</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Generate Palettes</Link>
+								<Link to="/generate/palettes">Generate Palettes</Link>
 							</li>
 						</ul>
 					</div>
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col gap-4">
 						<h4 className="text-black-1 font-medium">About the Creator</h4>
-
-						<ul className="flex flex-col gap-5">
+						<ul className="flex flex-col gap-2">
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>@sagethedev</Link>
+								<Link to="/creator">@sagethedev</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Sagethedev’s projects</Link>
+								<Link to="/projects">Sagethedev’s projects</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>About Sagethedev</Link>
+								<Link to="/about">About Sagethedev</Link>
 							</li>
 						</ul>
 					</div>
-					<div className="flex flex-col gap-10">
+					<div className="flex flex-col gap-4">
 						<h4 className="text-black-1 font-medium">Connect</h4>
-
-						<ul className="flex flex-col gap-5">
+						<ul className="flex flex-col gap-2">
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Twitter</Link>
+								<Link to="https://twitter.com">Twitter</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Github</Link>
+								<Link to="https://github.com">Github</Link>
 							</li>
 							<li className="font-light hover:text-green-1 transition-all duration-500">
-								<Link>Instagram</Link>
+								<Link to="https://instagram.com">Instagram</Link>
 							</li>
 						</ul>
 					</div>
