@@ -5,25 +5,38 @@ import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 import Dropdown from "../../svgs/Dropdown";
 import UserFavorite from "../../svgs/UserFavorite";
+import MenuIcon from "../../svgs/MenuIcon";
 
 export default function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
+	const [showMenu, setShowMenu] = useState(false);
 	const { favorites } = useContext(FavoritesContext);
 
 	const totalSaved = favorites.gradients.length + favorites.palettes.length;
 
 	useEffect(() => {
 		const handleScroll = () => {
-			const isScrolled = window.scrollY > 150;
-			setScrolled(isScrolled);
+			setScrolled(window.scrollY > 150);
 		};
 
 		window.addEventListener("scroll", handleScroll);
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
+		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	useEffect(() => {
+		if (showMenu) {
+			document.body.classList.add("no-scroll");
+		} else {
+			document.body.classList.remove("no-scroll");
+		}
+
+		return () => document.body.classList.remove("no-scroll");
+	}, [showMenu]);
+
+	const handleToggleMenu = () => {
+		setShowMenu((prevShowMenu) => !prevShowMenu);
+	};
+
 	const navLinks = [
 		{
 			name: "Generate",
@@ -45,51 +58,70 @@ export default function Navbar() {
 		},
 	];
 
-	console.log(totalSaved);
 	return (
-		<>
-			<nav
-				className={`fixed w-full  z-20 flex ${
-					scrolled ? "bg-white-1" : "bg-transparent"
-				} flex-row items-center justify-between py-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit`}>
+		<nav
+			className={`fixed w-full z-20 flex flex-row items-center justify-between py-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit transition-colors duration-300 ${
+				scrolled ? "bg-white-1" : "bg-transparent"
+			}`}>
+			<div className="w-full flex items-center justify-between">
+				<CommonLogo />
 				<div>
-					<CommonLogo />
-				</div>
-
-				<ul className="flex flex-row gap-6 items-center font-light">
-					<div className="flex flex-row gap-4 items-center">
+					<div className="hidden lg:flex flex-row gap-6 items-center font-light ml-6">
 						{navLinks.map((navLink, index) => (
 							<li
 								key={index}
 								className="flex flex-row gap-1 items-center tracking-[-0.32px]">
 								{navLink.name}
-								{navLink.hasDropdown && (
-									<span>
-										<Dropdown />
-									</span>
-								)}
+								{navLink.hasDropdown && <Dropdown />}
 							</li>
 						))}
-					</div>
-
-					<div>
 						<Button
 							variant={"primary"}
 							state="default"
 							size={"md"}>
 							Explore
 						</Button>
+						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center ml-4">
+							<UserFavorite />
+							<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
+								{totalSaved > 99 ? "99+" : totalSaved}
+							</span>
+						</div>
 					</div>
-
-					<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
-						<UserFavorite />
-
-						<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
-							{totalSaved > 99 ? "99+" : totalSaved}
-						</span>
+					<div className="lg:hidden flex items-center ml-auto">
+						<div
+							className="p-3 text-black-1"
+							onClick={handleToggleMenu}>
+							<MenuIcon />
+						</div>
+						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center ml-4">
+							<UserFavorite />
+							<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
+								{totalSaved > 99 ? "99+" : totalSaved}
+							</span>
+						</div>
 					</div>
+				</div>
+			</div>
+			{showMenu && (
+				<ul className="flex flex-col lg:hidden absolute top-full left-0 w-full bg-white-1 text-black-1 p-4">
+					{navLinks.map((navLink, index) => (
+						<li
+							key={index}
+							className="py-2 border-b border-gray-200 flex flex-row gap-1 items-center tracking-[-0.32px]">
+							{navLink.name}
+							{navLink.hasDropdown && <Dropdown />}
+						</li>
+					))}
+					<Button
+						variant={"primary"}
+						state="default"
+						size={"md"}
+						className="mt-4">
+						Explore
+					</Button>
 				</ul>
-			</nav>
-		</>
+			)}
+		</nav>
 	);
 }

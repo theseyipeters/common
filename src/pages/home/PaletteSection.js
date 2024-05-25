@@ -253,8 +253,8 @@ export default function PalettesSection() {
 	return (
 		<section className="h-fit px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
 			<div>
-				<div className="flex flex-row items-center justify-between py-1">
-					<h2 className="font-semibold text-xl flex items-center gap-2">
+				<div className="flex flex-col lg:flex-row gap-3 items-center justify-between py-1">
+					<h2 className="w-full lg:w-fit font-semibold text-xl flex items-center justify-between gap-2">
 						Explore palettes.{" "}
 						<Link
 							to={"/"}
@@ -263,39 +263,42 @@ export default function PalettesSection() {
 						</Link>
 					</h2>
 
-					<div className="flex flex-row items-center gap-2">
-						<div className="flex items-center gap-2">
-							<input
-								type="radio"
-								id="circleLayout"
-								name="layout"
-								value="circle"
-								checked={selectedLayout === "circle"}
-								onChange={handleLayoutChange}
-								className="cursor-pointer hidden"
-							/>
-							<label
-								htmlFor="circleLayout"
-								className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
-									selectedLayout === "circle" ? "bg-green-1" : "bg-gray-1"
-								}`}></label>
+					<div className="w-full lg:w-fit flex flex-row items-center justify-between gap-2">
+						<div className="flex flex-row gap-3">
+							<div className="flex items-center gap-2">
+								<input
+									type="radio"
+									id="circleLayout"
+									name="layout"
+									value="circle"
+									checked={selectedLayout === "circle"}
+									onChange={handleLayoutChange}
+									className="cursor-pointer hidden"
+								/>
+								<label
+									htmlFor="circleLayout"
+									className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
+										selectedLayout === "circle" ? "bg-green-1" : "bg-gray-1"
+									}`}></label>
+							</div>
+							<div className="flex items-center gap-2">
+								<input
+									type="radio"
+									id="squareLayout"
+									name="layout"
+									value="square"
+									checked={selectedLayout === "square"}
+									onChange={handleLayoutChange}
+									className="cursor-pointer hidden"
+								/>
+								<label
+									htmlFor="squareLayout"
+									className={`w-[20px] h-[20px] rounded-md cursor-pointer ${
+										selectedLayout === "square" ? "bg-green-1" : "bg-gray-1"
+									}`}></label>
+							</div>
 						</div>
-						<div className="flex items-center gap-2">
-							<input
-								type="radio"
-								id="squareLayout"
-								name="layout"
-								value="square"
-								checked={selectedLayout === "square"}
-								onChange={handleLayoutChange}
-								className="cursor-pointer hidden"
-							/>
-							<label
-								htmlFor="squareLayout"
-								className={`w-[20px] h-[20px] rounded-md cursor-pointer ${
-									selectedLayout === "square" ? "bg-green-1" : "bg-gray-1"
-								}`}></label>
-						</div>
+
 						<div className="border-b-2 border-green-1">
 							<Button
 								onClick={refreshPalettes}
