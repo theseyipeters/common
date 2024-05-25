@@ -4,6 +4,7 @@ import Home from "./pages/home/Home";
 import GradientDetails from "./pages/gradients/GradientDetails";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import Navbar from "./components/sections/Navbar"; // Make sure to import Navbar
+import PaletteDetails from "./pages/palettes/PaletteDetails";
 
 function App() {
 	return (
@@ -19,6 +20,10 @@ function App() {
 						<Route
 							path="/gradient/:encodedGradient"
 							element={<GradientDetails />}
+						/>
+						<Route
+							path="/palette/:encodedPalette"
+							element={<PaletteDetails />}
 						/>
 					</Routes>
 				</BrowserRouter>

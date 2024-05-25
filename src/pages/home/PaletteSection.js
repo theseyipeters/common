@@ -115,6 +115,13 @@ const coolWords = [
 ];
 
 const mixWords = ["Palette"];
+
+const encodePalette = (palette) => {
+	const jsonString = JSON.stringify(palette);
+	const base64String = btoa(jsonString); // Convert JSON string to Base64
+	return encodeURIComponent(base64String); // Make the Base64 string URL-safe
+};
+
 const generateRandomColor = () => {
 	const letters = "0123456789ABCDEF";
 	let color = "#";
@@ -213,10 +220,10 @@ const generatePalette = () => {
 
 	const shadesOfMainColor = [
 		mainColor,
-		generateShade(mainColor, 0.1),
-		// generateShade(mainColor, 0.8),
-		generateShade(mainColor, 0.4),
+		// generateShade(mainColor, 0.1),
+		generateShade(mainColor, 0.8),
 		generateShade(mainColor, 0.6),
+		generateShade(mainColor, 0.4),
 		generateShade(mainColor, 0.2),
 	].map(ensureValidHex);
 
@@ -313,16 +320,21 @@ export default function PalettesSection() {
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">
-					{palettes.map((palette, index) => (
-						<PaletteCard
-							selectedLayout={selectedLayout}
-							key={index}
-							id={palette.id}
-							colors={palette.colors}
-							name={palette.name}
-							onFavorite={() => addFavoritePalette(palette)}
-						/>
-					))}
+					{palettes.map((palette, index) => {
+						const encodedPalette = encodePalette(palette);
+						return (
+							<PaletteCard
+								selectedLayout={selectedLayout}
+								key={index}
+								id={palette.id}
+								colors={palette.colors}
+								name={palette.name}
+								palette={palette}
+								link={`localhost:3000/palette/${encodedPalette}`}
+								onFavorite={() => addFavoritePalette(palette)}
+							/>
+						);
+					})}
 				</div>
 
 				<div className="mt-16 flex flex-col gap-3 items-center justify-center">

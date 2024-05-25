@@ -6,12 +6,12 @@ export default function Footer() {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="bg-white-1 text-gray-2 py-10 px-6 md:px-12 lg:px-24 font-outfit">
+		<footer className="bg-white-1 text-gray-2 py-10 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
 			<div className="w-full flex flex-col md:flex-row items-start md:items-start">
 				<div className="w-full md:w-1/2 flex flex-col gap-5">
 					<CommonLogo />
 					<div className="font-light flex flex-col gap-3">
-						<p className="font-light leading-8">
+						<p className="font-light leading-8 w-3/5 lg:w-3/5">
 							Common helps you discover the beauty in simplicity. Create
 							stunning color palettes effortlessly and bring your creative
 							projects to life.
