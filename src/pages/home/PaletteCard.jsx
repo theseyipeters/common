@@ -4,6 +4,13 @@ import Heart from "../../svgs/Heart";
 import Code from "../../svgs/Code";
 import Download from "../../svgs/Download";
 import Options from "../../svgs/Options";
+import CopyIcon from "../../svgs/CopyIcon";
+import ViewIcon from "../../svgs/ViewIcon";
+import XIcon from "../../svgs/XIcon";
+import Favorite from "../../svgs/Favorite";
+import Facebook from "../../svgs/Facebook";
+import LinkedIn from "../../svgs/LinkedIn";
+import Whatsapp from "../../svgs/Whatsapp";
 import { motion, AnimatePresence } from "framer-motion";
 import CloseIcon from "../../svgs/CloseIcon";
 import { toPng } from "html-to-image";
@@ -15,14 +22,19 @@ export default function PaletteCard({
 	id,
 	hoverIndex,
 	selectedLayout,
+	link,
+	// palette,
 }) {
 	const [copiedColor, setCopiedColor] = useState(null);
+	const [showOptions, setShowOptions] = useState(false);
 	const [showCss, setShowCss] = useState(false);
 	const { favorites, addFavoritePalette, removeFavoritePalette } =
 		useContext(FavoritesContext);
 
 	const isFavorite = favorites.palettes.some((fav) => fav.id === id);
 	const paletteRef = useRef();
+
+	// console.log(palette);
 
 	const handleShowCss = () => {
 		setShowCss(true);
@@ -32,12 +44,13 @@ export default function PaletteCard({
 		setShowCss(false);
 	};
 
-	// useEffect(() => {
-	// 	// Check if the gradient is already in favorites on mount
-	// 	const favorites =
-	// 		JSON.parse(localStorage.getItem("FAVORITE PALETTES")) || [];
-	// 	setIsFavorite(favorites.some((fav) => fav.id === id));
-	// }, [id]);
+	const handleShowOptions = () => {
+		setShowOptions(true);
+	};
+
+	const handleCloseOptions = () => {
+		setShowOptions(false);
+	};
 
 	const handleToggleFavorite = () => {
 		if (isFavorite) {
@@ -46,6 +59,18 @@ export default function PaletteCard({
 			addFavoritePalette({ id, colors, name });
 		}
 	};
+
+	const encodePalette = (palette) => {
+		const jsonString = JSON.stringify(palette);
+		const base64String = btoa(jsonString); // Convert JSON string to Base64
+		return encodeURIComponent(base64String); // Make the Base64 string URL-safe
+	};
+
+	const encodedPalette = encodePalette({
+		id,
+		colors,
+		name,
+	});
 
 	const copyToClipboard = (color) => {
 		navigator.clipboard.writeText(color).then(() => {
@@ -59,6 +84,12 @@ export default function PaletteCard({
 		const cssCode = cssCodeElement.innerText;
 		navigator.clipboard.writeText(cssCode).then(() => {
 			alert("CSS code copied to clipboard!");
+		});
+	};
+
+	const handleCopyPaletteLink = () => {
+		navigator.clipboard.writeText(link).then(() => {
+			alert("Palette link copied to clipboard!");
 		});
 	};
 
@@ -85,6 +116,32 @@ export default function PaletteCard({
 		hidden: { opacity: 0, y: 20 },
 		visible: { opacity: 1, y: 0 },
 		exit: { opacity: 0, y: 20 },
+	};
+
+	const handleShare = (platform) => {
+		const encodedUrl = encodeURIComponent(link);
+		let shareUrl = "";
+		switch (platform) {
+			case "twitter":
+				shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodeURIComponent(
+					`Check out this gradient: ${name}`
+				)}`;
+				break;
+			case "linkedin":
+				shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+				break;
+			case "facebook":
+				shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+				break;
+			case "whatsapp":
+				shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+					`Check out this gradient: ${name} ${link}`
+				)}`;
+				break;
+			default:
+				break;
+		}
+		window.open(shareUrl, "_blank");
 	};
 
 	return (
@@ -116,7 +173,11 @@ export default function PaletteCard({
 				<div className="h-fit">
 					<div className="w-full flex mt-2">
 						<div className="w-full">
-							<Link className="font-medium">{name}</Link>
+							<Link
+								to={`/palette/${encodedPalette}`}
+								className="font-medium">
+								{name}
+							</Link>
 							<div className="font-light">
 								<small className="text-gray-2 cursor-pointer transition-color">
 									by Common
@@ -168,7 +229,7 @@ export default function PaletteCard({
 							<Download />
 						</div>
 						<div
-							// onClick={handleShowOptions}
+							onClick={handleShowOptions}
 							className="hover:text-black-2 cursor-pointer">
 							<Options />
 						</div>
@@ -218,6 +279,112 @@ export default function PaletteCard({
 							</div>
 							<div
 								onClick={handleCloseCss}
+								className="absolute top-7 right-5 cursor-pointer">
+								<CloseIcon />
+							</div>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			<AnimatePresence>
+				{showOptions && (
+					<motion.div
+						className="absolute border inset-0 top-0 h-[338px] bg-white-1 bg-opacity-[98%] rounded-lg"
+						initial="hidden"
+						animate="visible"
+						exit="exit"
+						variants={variants}
+						transition={{ duration: 0.5, ease: "easeInOut" }}>
+						<div className="relative w-full border h-full py-8 px-4 rounded-lg shadow-lg flex flex-col gap-4 justify-between">
+							<div className="mt-4 text-black-3 font-light px-4">
+								<ul className="flex flex-col gap-2 items-start ">
+									<li>
+										<button
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											onClick={handleCopyPaletteLink}
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<CopyIcon />
+											Copy palette link
+										</button>
+									</li>
+									<li>
+										<button
+											onClick={() =>
+												window.open(`/gradient/${encodedPalette}`, "_blank")
+											}
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<ViewIcon />
+											View/Edit palette
+										</button>
+									</li>
+									<li onClick={handleToggleFavorite}>
+										{isFavorite ? (
+											<button
+												className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+												variant={`text`}
+												state="default"
+												size={"lg"}>
+												<div className="text-red-600">
+													<Heart />
+												</div>
+												Remove from Favorites
+											</button>
+										) : (
+											<button
+												className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+												variant={`text`}
+												state="default"
+												size={"lg"}>
+												<Favorite />
+												Add to Favorites
+											</button>
+										)}
+									</li>
+								</ul>
+								<ul className="mt-3 flex flex-col gap-1 pt-3 border-t w-full border-gray-3/30 items-start">
+									<li>
+										<Link
+											onClick={() => handleShare("x")}
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<XIcon />
+											Share on X
+										</Link>
+									</li>
+									<li>
+										<button
+											onClick={() => handleShare("linkedin")}
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<LinkedIn />
+											Share on LinkedIn
+										</button>
+									</li>
+									<li>
+										<button
+											onClick={() => handleShare("whatsapp")}
+											className="flex gap-[12px] items-center tracking-[-0.5px] hover:text-green-1 transition ease-in-out duration-300 py-1"
+											variant={`text`}
+											state="default"
+											size={"lg"}>
+											<Whatsapp />
+											Share on Whatsapp
+										</button>
+									</li>
+								</ul>
+							</div>
+							<div
+								onClick={handleCloseOptions}
 								className="absolute top-7 right-5 cursor-pointer">
 								<CloseIcon />
 							</div>
