@@ -66,7 +66,7 @@ export default function Navbar() {
 			<div className="w-full flex items-center justify-between">
 				<CommonLogo />
 				<div>
-					<div className="hidden lg:flex flex-row gap-6 items-center font-light ml-6">
+					<div className="hidden lg:flex flex-row gap-6 items-center font-light w-fit">
 						{navLinks.map((navLink, index) => (
 							<li
 								key={index}
@@ -81,11 +81,14 @@ export default function Navbar() {
 							size={"md"}>
 							Explore
 						</Button>
-						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center ml-4">
-							<UserFavorite />
-							<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
-								{totalSaved > 99 ? "99+" : totalSaved}
-							</span>
+						<div className="w-full">
+							<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
+								<UserFavorite />
+
+								<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
+									{totalSaved > 99 ? "99+" : totalSaved}
+								</span>
+							</div>
 						</div>
 					</div>
 					<div className="lg:hidden flex items-center ml-auto">
@@ -94,8 +97,9 @@ export default function Navbar() {
 							onClick={handleToggleMenu}>
 							<MenuIcon />
 						</div>
-						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center ml-4">
+						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
 							<UserFavorite />
+
 							<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
 								{totalSaved > 99 ? "99+" : totalSaved}
 							</span>
