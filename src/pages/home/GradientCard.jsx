@@ -50,6 +50,7 @@ export default function GradientCard({
 	id,
 	link,
 	selectedLayout,
+	onClick,
 }) {
 	const [hoverIndex, setHoverIndex] = useState(null);
 	const [showCss, setShowCss] = useState(false);
@@ -158,6 +159,7 @@ export default function GradientCard({
 
 	return (
 		<div
+			onClick={onClick}
 			style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.09)" }}
 			className={`relative shadow-md rounded-lg w-full px-[15px]  ${
 				selectedLayout === "square"
@@ -202,7 +204,10 @@ export default function GradientCard({
 								</div>
 							</div>
 							<div
-								onClick={handleToggleFavorite}
+								onClick={(e) => {
+									e.stopPropagation();
+									handleToggleFavorite();
+								}}
 								id="heart"
 								className={` h-fit cursor-pointer ${
 									isFavorite

@@ -6,6 +6,7 @@ import Button from "../ui/Button";
 import Dropdown from "../../svgs/Dropdown";
 import UserFavorite from "../../svgs/UserFavorite";
 import MenuIcon from "../../svgs/MenuIcon";
+import CommonLogoSm from "../../svgs/CommonLogoSm";
 
 export default function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
@@ -60,11 +61,20 @@ export default function Navbar() {
 
 	return (
 		<nav
-			className={`fixed w-full z-20 flex flex-row items-center justify-between py-2 px-[20px] md:px-[50px] lg:px-[150px] font-outfit transition-colors duration-300 ${
+			className={`fixed w-full z-20 flex flex-row items-center justify-between py-6 px-[20px] md:px-[50px] lg:px-[150px] font-outfit transition-colors duration-300 ${
 				scrolled ? "bg-white-1" : "bg-transparent"
 			}`}>
 			<div className="w-full flex items-center justify-between">
-				<CommonLogo />
+				<Link
+					to={"/"}
+					className="hidden md:block">
+					<CommonLogo />
+				</Link>
+				<Link
+					to={"/"}
+					className="block md:hidden lg:hidden">
+					<CommonLogoSm />
+				</Link>
 				<div>
 					<div className="hidden lg:flex flex-row gap-6 items-center font-light w-fit">
 						{navLinks.map((navLink, index) => (
@@ -82,13 +92,15 @@ export default function Navbar() {
 							Explore
 						</Button>
 						<div className="w-full">
-							<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
+							<Link
+								to={"/saved"}
+								className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
 								<UserFavorite />
 
 								<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
 									{totalSaved > 99 ? "99+" : totalSaved}
 								</span>
-							</div>
+							</Link>
 						</div>
 					</div>
 					<div className="lg:hidden flex items-center ml-auto">

@@ -3,15 +3,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import GradientDetails from "./pages/gradients/GradientDetails";
 import { FavoritesProvider } from "./context/FavoritesContext";
-import Navbar from "./components/sections/Navbar"; // Make sure to import Navbar
 import PaletteDetails from "./pages/palettes/PaletteDetails";
+import Saved from "./pages/saved/Saved";
 
 function App() {
 	return (
 		<FavoritesProvider>
 			<div>
 				<BrowserRouter>
-					<Navbar /> {/* Ensure Navbar is included */}
 					<Routes>
 						<Route
 							path="/"
@@ -25,6 +24,10 @@ function App() {
 							path="/palette/:encodedPalette"
 							element={<PaletteDetails />}
 						/>
+						<Route
+							path="/saved"
+							element={<Saved />}
+						/>{" "}
 					</Routes>
 				</BrowserRouter>
 			</div>
