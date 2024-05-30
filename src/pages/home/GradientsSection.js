@@ -5,6 +5,7 @@ import RefreshIcon from "../../svgs/RefreshIcon";
 import GradientCard from "./GradientCard";
 import { v4 as uuidv4 } from "uuid";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import GradientModal from "../../components/modals/GradientModal";
 
 const coolWords = [
 	"Radiant",
@@ -227,10 +228,22 @@ const generateGradient = () => {
 export default function GradientsSection() {
 	const [gradients, setGradients] = useState([]);
 	const { addFavoriteGradient } = useContext(FavoritesContext);
-	const [selectedLayout, setSelectedLayout] = useState("square"); // Default layout
+	const [selectedLayout, setSelectedLayout] = useState("square");
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedGradient, setSelectedGradient] = useState(null);
 
 	const handleLayoutChange = (event) => {
 		setSelectedLayout(event.target.value);
+	};
+
+	const handleCardClick = (gradient) => {
+		setSelectedGradient(gradient);
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+		setSelectedGradient(null);
 	};
 
 	const refreshGradients = () => {
@@ -322,6 +335,7 @@ export default function GradientsSection() {
 								opacity={gradientObj.opacity}
 								link={`localhost:3000/gradient/${encodedGradient}`}
 								onFavorite={() => addFavoriteGradient(gradientObj)}
+								onClick={() => handleCardClick(gradientObj)}
 							/>
 						);
 					})}
@@ -339,6 +353,12 @@ export default function GradientsSection() {
 					</Button>
 				</div>
 			</div>
+
+			<GradientModal
+				isOpen={isModalOpen}
+				onClose={closeModal}
+				gradient={selectedGradient}
+			/>
 		</section>
 	);
 }
