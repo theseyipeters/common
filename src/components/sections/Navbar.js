@@ -17,7 +17,7 @@ export default function Navbar() {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			setScrolled(window.scrollY > 150);
+			setScrolled(window.scrollY > 100);
 		};
 
 		window.addEventListener("scroll", handleScroll);
@@ -61,7 +61,7 @@ export default function Navbar() {
 
 	return (
 		<nav
-			className={`fixed w-full z-20 flex flex-row items-center justify-between py-6 px-[20px] md:px-[50px] lg:px-[150px] font-outfit transition-colors duration-300 ${
+			className={`fixed w-full z-20 flex flex-row items-center justify-between py-3 lg:py-6 px-[20px] md:px-[50px] lg:px-[150px] font-outfit transition-colors duration-300 ${
 				scrolled ? "bg-white-1" : "bg-transparent"
 			}`}>
 			<div className="w-full flex items-center justify-between">
@@ -109,13 +109,17 @@ export default function Navbar() {
 							onClick={handleToggleMenu}>
 							<MenuIcon />
 						</div>
-						<div className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
+						<Link
+							to={"/saved"}
+							className="relative bg-black-1 rounded-full h-[40px] w-[40px] flex items-center justify-center">
 							<UserFavorite />
 
-							<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
-								{totalSaved > 99 ? "99+" : totalSaved}
-							</span>
-						</div>
+							{totalSaved > 0 && (
+								<span className="bg-red-500 text-white-1 text-xs absolute top-[-12px] right-[-10px] h-[30px] w-[30px] rounded-full flex items-center justify-center">
+									{totalSaved > 99 ? "99+" : totalSaved}
+								</span>
+							)}
+						</Link>
 					</div>
 				</div>
 			</div>

@@ -23,7 +23,7 @@ export default function PaletteCard({
 	hoverIndex,
 	selectedLayout,
 	link,
-	// palette,
+	onClick,
 }) {
 	const [copiedColor, setCopiedColor] = useState(null);
 	const [showOptions, setShowOptions] = useState(false);
@@ -146,6 +146,7 @@ export default function PaletteCard({
 
 	return (
 		<div
+			onClick={onClick}
 			style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.09)" }}
 			className={`relative px-[15px] pt-[15px] pb-[30px] rounded-lg h-[338px] shadow-md ${
 				selectedLayout === "circle" ? "rounded-full" : ""
