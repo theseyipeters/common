@@ -12,9 +12,9 @@ export default function Body() {
 
 	return (
 		<main className="w-full pt-[100px]">
-			<div className="h-fit bg-white-2 flex flex-col  lg:flex-row gap-5 items-center justify-between w-full py-10 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
-				<div className="flex flex-col gap-2 items-center lg:items-start">
-					<h1 className="text-[50px] tracking-[-3.5px]">
+			<div className="h-fit bg-white-2 flex flex-col  lg:flex-row gap-5 items-center justify-between w-full py-20 lg:py-10 px-[20px] md:px-[50px] lg:px-[150px] font-outfit">
+				<div className="flex flex-col gap-2 text-center lg:text-left items-center lg:items-start">
+					<h1 className="text-[40px] lg:text-[50px] tracking-[-3.5px]">
 						Find your saved <span className="textGradient px-1">items</span>.
 					</h1>
 
@@ -25,7 +25,7 @@ export default function Body() {
 					</p>
 				</div>
 
-				<div>
+				<div className="w-3/4 md:w-1/2 lg:w-1/2 mt-10 lg:mt-0">
 					<SavedIllustration />
 				</div>
 			</div>

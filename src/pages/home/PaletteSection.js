@@ -5,6 +5,7 @@ import RefreshIcon from "../../svgs/RefreshIcon";
 import PaletteCard from "./PaletteCard";
 import { v4 as uuidv4 } from "uuid";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import PaletteModal from "../../components/modals/PaletteModal";
 
 const coolWords = [
 	"Scovian",
@@ -239,10 +240,22 @@ const generatePalette = () => {
 export default function PalettesSection() {
 	const [palettes, setPalettes] = useState([]);
 	const { addFavoritePalette } = useContext(FavoritesContext);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedPalette, setSelectedPalette] = useState(null);
 	const [selectedLayout, setSelectedLayout] = useState("square"); // Default layout
 
 	const handleLayoutChange = (event) => {
 		setSelectedLayout(event.target.value);
+	};
+
+	const handleCardClick = (gradient) => {
+		setSelectedPalette(gradient);
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+		setSelectedPalette(null);
 	};
 
 	const refreshPalettes = () => {
@@ -332,6 +345,7 @@ export default function PalettesSection() {
 								palette={palette}
 								link={`localhost:3000/palette/${encodedPalette}`}
 								onFavorite={() => addFavoritePalette(palette)}
+								onClick={() => handleCardClick(palette)}
 							/>
 						);
 					})}
@@ -349,6 +363,12 @@ export default function PalettesSection() {
 					</Button>
 				</div>
 			</div>
+
+			<PaletteModal
+				isOpen={isModalOpen}
+				onClose={closeModal}
+				palette={selectedPalette}
+			/>
 		</section>
 	);
 }
