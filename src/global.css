@@ -1,0 +1,224 @@
+@import url("https://fonts.googleapis.com/css2?family=Alata&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alata&family=Outfit:wght@100..900&display=swap");
+
+* {
+	box-sizing: border-box;
+}
+pre {
+	overflow: auto;
+	color: #404040;
+	white-space: pre-wrap; /* Optional: wraps long lines instead of scrolling horizontally */
+	word-wrap: break-word; /* Optional: breaks long words to prevent overflow */
+}
+.font-alata {
+	font-family: "Alata";
+}
+
+.font-outfit {
+	font-family: "Outfit";
+}
+
+@media (min-width: 1306px) {
+	.heroBg {
+		background: radial-gradient(
+					circle farthest-side at 0% 50%,
+					#fff8f0 23.5%,
+					#0000 0
+				)
+				33.6px 48px,
+			radial-gradient(
+					circle farthest-side at 0% 50%,
+					rgba(122, 135, 23, 0.04) 24%,
+					#0000 0
+				)
+				30.4px 48px,
+			linear-gradient(#fff8f0 14%, #0000 0, #0000 85%, #fff8f0 0) 0 0,
+			linear-gradient(
+					150deg,
+					#fff8f0 24%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 26%,
+					#0000 0,
+					#0000 74%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 76%,
+					#fff8f0 0
+				)
+				0 0,
+			linear-gradient(
+					30deg,
+					#fff8f0 24%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 26%,
+					#0000 0,
+					#0000 74%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 76%,
+					#fff8f0 0
+				)
+				0 0,
+			linear-gradient(
+					90deg,
+					rgba(122, 135, 23, 0.04) 2%,
+					#fff8f0 0,
+					#fff8f0 98%,
+					rgba(122, 135, 23, 0.04) 0%
+				)
+				0 0 #fff8f0;
+		background-size: 64px 96px;
+		background-color: #fff8f0;
+	}
+}
+@media (min-width: 1440px) {
+	@keyframes animateBackground {
+		0% {
+			background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+		}
+		50% {
+			background-position: 64px 96px, 30.4px 48px, 0 0, 0 0, 0 0;
+		}
+		100% {
+			background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+		}
+	}
+
+	.heroBg {
+		background: radial-gradient(
+					circle farthest-side at 0% 50%,
+					#fff8f0 23.5%,
+					#0000 0
+				)
+				33.6px 48px,
+			radial-gradient(
+					circle farthest-side at 0% 50%,
+					rgba(122, 135, 23, 0.04) 24%,
+					#0000 0
+				)
+				30.4px 48px,
+			linear-gradient(#fff8f0 14%, #0000 0, #0000 85%, #fff8f0 0) 0 0,
+			linear-gradient(
+					150deg,
+					#fff8f0 24%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 26%,
+					#0000 0,
+					#0000 74%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 76%,
+					#fff8f0 0
+				)
+				0 0,
+			linear-gradient(
+					30deg,
+					#fff8f0 24%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 26%,
+					#0000 0,
+					#0000 74%,
+					rgba(122, 135, 23, 0.04) 0,
+					rgba(122, 135, 23, 0.04) 76%,
+					#fff8f0 0
+				)
+				0 0,
+			linear-gradient(
+					90deg,
+					rgba(122, 135, 23, 0.04) 2%,
+					#fff8f0 0,
+					#fff8f0 98%,
+					rgba(122, 135, 23, 0.04) 0%
+				)
+				0 0 #fff8f0;
+		background-size: 64px 96px;
+		background-color: #fff8f0;
+		animation: animateBackground 10s linear infinite;
+	}
+}
+.textGradient {
+	background: linear-gradient(90deg, #798616 70.5%, #06cb5d 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+h1 {
+	font-family: Alata;
+	font-size: 100px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 100%;
+	letter-spacing: -4.9px;
+}
+h2 {
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	letter-spacing: -0.32px;
+}
+p {
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.32px;
+}
+
+.transition-color {
+	transition: color 0.3s ease-in-out;
+}
+
+@keyframes slideFadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(0px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideFadeOut {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(0px);
+	}
+}
+
+.slide-fade-in {
+	animation: slideFadeIn 1s ease-out forwards;
+}
+
+.slide-fade-out {
+	animation: slideFadeOut 1s ease-out forwards;
+}
+
+/* Add this to your CSS or tailwind configuration */
+#block:hover div {
+	opacity: 1;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal-overlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.768);
+}
+
+.modal-container {
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+	z-index: 1001;
+}
